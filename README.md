@@ -351,3 +351,71 @@ Include:
 ---
 
 *Built by the Portaldot volunteer community · [Developer Playground](https://portaldot-playground.vercel.app) · [GitHub](https://github.com/Investorquab/portaldot-playground)*
+
+---
+
+## 🪟 Windows Troubleshooting — Virtualization Error
+
+If you see this error when running `wsl --install -d Ubuntu`:
+
+```
+WSL2 is not supported with your current machine configuration.
+Please enable the "Virtual Machine Platform" optional component
+Error code: HCS_E_HYPERV_NOT_INSTALLED
+```
+
+This means virtualization is disabled on your PC. Follow these steps:
+
+### Step 1 — Enable Virtual Machine Platform
+
+Open **PowerShell as Administrator** and run both commands:
+
+```powershell
+dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+```
+
+### Step 2 — Fully restart your PC
+
+Shut down completely — not sleep or restart. Power off, then power back on.
+
+### Step 3 — Enter BIOS
+
+As your PC starts, press one of these keys **repeatedly** before Windows loads:
+
+| Brand | Key |
+|-------|-----|
+| Dell | F2 |
+| HP | F10 or Esc |
+| Lenovo | F1 or F2 |
+| ASUS | F2 or Delete |
+| Acer | F2 |
+| Other | Delete or F2 |
+
+### Step 4 — Enable Virtualization in BIOS
+
+Look for one of these settings depending on your processor:
+
+- **Intel:** "Intel Virtualization Technology" or "Intel VT-x" → set to **Enabled**
+- **AMD:** "SVM Mode" or "AMD-V" → set to **Enabled**
+
+Save and exit (usually **F10**).
+
+### Step 5 — Try WSL again
+
+```powershell
+wsl --install -d Ubuntu
+```
+
+If it still fails, run this first then restart:
+
+```powershell
+wsl.exe --install --no-distribution
+```
+
+### Still not working?
+
+Your PC may not support virtualization at all (some older or locked-down machines). In that case use **GitHub Codespaces** — it runs entirely in your browser with zero installation:
+
+👉 See the [GitHub Codespaces section](#️-github-codespaces) above
+
